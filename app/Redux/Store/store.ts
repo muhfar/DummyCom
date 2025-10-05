@@ -1,7 +1,16 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
-import productReducer from '../Reducers/Products/products.reducer';
 import userReducer from '../Reducers/User/user.reducer';
-import { persistReducer, persistStore } from 'redux-persist';
+import cartReducer from '../Reducers/Cart/cart.reducer';
+import {
+  FLUSH,
+  PAUSE,
+  PERSIST,
+  persistReducer,
+  persistStore,
+  PURGE,
+  REGISTER,
+  REHYDRATE,
+} from 'redux-persist';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const persistConfig = {
@@ -12,11 +21,17 @@ const persistConfig = {
 
 const rootReducer = combineReducers({
   user: userReducer,
-  product: productReducer,
+  cart: cartReducer,
 });
 
 const store = configureStore({
   reducer: persistReducer(persistConfig, rootReducer),
+  middleware: getDefaultMiddleware =>
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+      },
+    }),
 });
 
 export const persistor = persistStore(store);

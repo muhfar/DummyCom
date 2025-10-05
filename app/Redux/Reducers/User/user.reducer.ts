@@ -1,10 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-const LOGIN_OPTIONS = {
-  MANUAL: 'MANUAL',
-  GOOGLE: 'GOOGLE',
-};
-
 type State = {
   loginOptions: string;
   email: string;

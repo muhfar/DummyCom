@@ -21,6 +21,9 @@ const TextInput = (props: Props): ReactElement => {
             mode="outlined"
             placeholder={props.placeholder}
             error={!!error}
+            secureTextEntry={props.secureTextEntry}
+            left={props.left}
+            right={props.right}
           />
           {error && <ErrorInput message={error.message} />}
         </View>

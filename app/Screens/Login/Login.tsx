@@ -1,8 +1,9 @@
-import { ImageBackground, View } from 'react-native';
+import { View } from 'react-native';
 import schema from './Login.validation';
 import { FormProvider, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import TextInput from '../../Component/TextInput';
+import { TextInput as TextInputPaper } from 'react-native-paper';
 import { saveToken } from '../../Redux/Reducers/User/user.reducer';
 import { useDispatch } from 'react-redux';
 import type {
@@ -13,10 +14,14 @@ import type {
 import { useNavigation } from '@react-navigation/native';
 import { AppDispatch } from '../../Redux/Store/store';
 import { nanoid } from '@reduxjs/toolkit';
-import { Button, MD3Theme, Text, useTheme } from 'react-native-paper';
+import { Button, Text, useTheme } from 'react-native-paper';
 import styles from './Login.styles';
-import type { VoidFunction } from '../../Types/index.types';
-import { login } from '../../Assets';
+import type {
+  BooleanFunction,
+  UseTheme,
+  VoidFunction,
+} from '../../Types/index.types';
+import { useState } from 'react';
 
 interface SaveTokenPayload {
   loginOptions: string;
@@ -50,7 +55,9 @@ const renderLoginForm = (
   formMethods: LoginFormMethods,
   dispatch: AppDispatch,
   navigation: NavigationProps,
-  colors: MD3Theme['colors'],
+  colors: UseTheme['colors'],
+  isSecure: boolean,
+  setIsSecure: BooleanFunction,
 ) => (
   <View style={styles.formContainer}>
     <TextInput
@@ -61,7 +68,13 @@ const renderLoginForm = (
     <TextInput
       label="Password"
       placeholder="Enter your password"
-      secureTextEntry
+      secureTextEntry={isSecure}
+      right={
+        <TextInputPaper.Icon
+          icon={isSecure ? 'eye' : 'eye-off'}
+          onPress={() => setIsSecure(!isSecure)}
+        />
+      }
       {...formMethods.register('password')}
     />
     <Button
@@ -89,6 +102,7 @@ const Login = () => {
   const dispatch = useDispatch<AppDispatch>();
   const navigation = useNavigation<NavigationProps>();
   const { colors } = useTheme();
+  const [isSecure, setIsSecure] = useState(false);
 
   return (
     <FormProvider {...formMethods}>
@@ -102,7 +116,14 @@ const Login = () => {
           >
             Login
           </Text>
-          {renderLoginForm(formMethods, dispatch, navigation, colors)}
+          {renderLoginForm(
+            formMethods,
+            dispatch,
+            navigation,
+            colors,
+            isSecure,
+            setIsSecure,
+          )}
         </View>
       </View>
     </FormProvider>

@@ -2,6 +2,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { SCREEN_NAMES } from '../../Constants';
 import Home from '../../Screens/Home';
 import { RootParamList } from '../RootNavigator/RootNavigator.types';
+import Detail from '../../Screens/Detail';
 
 const AuthorizeStack = () => {
   const Stack = createNativeStackNavigator<RootParamList>();
@@ -13,7 +14,7 @@ const AuthorizeStack = () => {
         component={Home}
         options={{ headerShown: false }}
       />
-      {/* <Stack.Screen name={SCREEN_NAMES.Authorize.Detail} component={Details} /> */}
+      <Stack.Screen name={SCREEN_NAMES.Authorize.Detail} component={Detail} />
     </Stack.Navigator>
   );
 };
