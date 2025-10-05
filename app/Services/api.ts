@@ -25,3 +25,12 @@ export const fetchAllProducts = async ({
     hasMore: pageParam + limit < result.data.total,
   };
 };
+
+export const fetchProductById = async ({ queryKey }: QueryFunctionContext) => {
+  const [, id] = queryKey;
+
+  if (!id) throw new Error('Product ID is required');
+
+  const result = await api.get(`products/${id}`);
+  return result.data;
+};
